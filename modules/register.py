@@ -18,7 +18,7 @@ class RegisterBot(slixmpp.ClientXMPP):
         self.register_plugin('xep_0066') # Out-of-band Data
         self.register_plugin('xep_0077') # In-band Registration
 
-        xmpp['xep_0077'].force_unregistration = True
+        self['xep_0077'].force_unregistration = True
 
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("register", self.register)
@@ -30,6 +30,7 @@ class RegisterBot(slixmpp.ClientXMPP):
         self.disconnect()
 
     async def register(self, iq):
+        
         resp = self.Iq()
         resp['type'] = 'set'
         resp['register']['username'] = self.boundjid.user
@@ -39,7 +40,7 @@ class RegisterBot(slixmpp.ClientXMPP):
             await resp.send()
             print("Account created for %s!" % self.boundjid)
         except IqError as e:
-            print("Could not unregister account: %s" %
+            print("Could not register account: %s" %
                     e.iq['error']['text'])
             self.disconnect()
         except IqTimeout:

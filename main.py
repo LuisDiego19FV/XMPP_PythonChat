@@ -36,10 +36,8 @@ Select one of the options:
     2. Send direct messages
     3. Add contact
     4. Show contacts
-    5. Show all users
-    6. Group Chat
-    7. Send file
-    8. Disconect/Log-out
+    5. Group Chat
+    6. Disconect/Log-out
 '''
 
 menu2_6 = '''
@@ -120,7 +118,7 @@ def process_menu1():
             try:
                 opt2 = int(input(menu2))
 
-                if opt2 < 1 or opt2 > 8:
+                if opt2 < 1 or opt2 > 7:
                     print("Choose a valid option")
                     continue
             except:
@@ -194,12 +192,8 @@ def process_menu1():
                 print("\n------------- CONTACTS -------------")
                 xmpp.get_contacts()
 
-            # OPTION 5: for displaying all users
+            # OPTION 5: for managing muc
             elif opt2 == 5:
-                continue
-
-            # OPTION 6: for managing muc
-            elif opt2 == 6:
 
                 while True:
                     try:
@@ -248,15 +242,8 @@ def process_menu1():
                 # Exit room
                 xmpp.muc_exit_room()
 
-            # OPTION 7: for file transfering
-            elif opt2 == 7:
-                file_path = input("Path of file: ")
-                file_recipient = input("Send to: ")
-
-                # asyncio.run(xmpp.send_file(file_path, file_recipient))
-
-            # OPTION 8: session log out
-            elif opt2 == 8:
+            # OPTION 6: session log out
+            elif opt2 == 6:
                 stop_threads = True
                 ses_thread.join()
                 break

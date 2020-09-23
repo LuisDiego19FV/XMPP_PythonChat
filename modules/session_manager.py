@@ -24,6 +24,7 @@ class Session(slixmpp.ClientXMPP):
         self.nick = jid[:jid.index("@")]
         self.messages = {}
         self.online_contacts = {}
+        self.file_transfered = None
 
         # Set the client to auto authorize and subscribe when 
         # a subcription event is recieved
@@ -241,16 +242,10 @@ class Session(slixmpp.ClientXMPP):
         except (IqError, IqTimeout):
             print("Error in querry")
 
-    def muc_discover_users(self):
-        try:
-            self['xep_0030'].get_items(jid='search.redes2020.xyz')
-        except (IqError, IqTimeout):
-            print("Error in querry")
-
     # print_info: print information of cases recieved from the server
     # Args: iq (stanza)
     def print_info(self, iq):
-        
+
         # Processes result of rooms' query
         if str(iq['type']) == 'result' and 'conference' in str(iq['from']):
             

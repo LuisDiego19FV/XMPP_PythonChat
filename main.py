@@ -1,4 +1,5 @@
 import time
+import asyncio
 import threading
 import modules.register as register
 import modules.unregister as unregister
@@ -35,7 +36,17 @@ Select one of the options:
     2. Send direct messages
     3. Add contact
     4. Show contacts
-    5. Disconect
+    5. Show all users
+    6. Group Chat
+    7. Send file
+    8. Disconect/Log-out
+'''
+
+menu2_6 = '''
+    1. Join room
+    2. Create & join room
+    3. Show all rooms
+    4. <- Back
 '''
 
 def session_thread(xmpp, stop):
@@ -47,6 +58,8 @@ def session_thread(xmpp, stop):
 
         time.sleep(0.2)
     
+    xmpp.get_disconnected()
+
     return
 
 def process_menu1():
@@ -99,6 +112,7 @@ def process_menu1():
         ses_thread = threading.Thread(target = session_thread, args=(xmpp, lambda : stop_threads,))
         ses_thread.start()
 
+        # wait for modules prints
         time.sleep(3)
 
         while True:
@@ -106,7 +120,7 @@ def process_menu1():
             try:
                 opt2 = int(input(menu2))
 
-                if opt2 < 1 or opt2 > 5:
+                if opt2 < 1 or opt2 > 8:
                     print("Choose a valid option")
                     continue
             except:
@@ -145,17 +159,18 @@ def process_menu1():
                     user_to_chat = list(messages.keys())[chat_opt - 1]
                     messages_sent = messages[user_to_chat]["messages"]
 
+                    print("* write and press enter to respond (-q to quit) *")
+
                     # Display conversation
                     for i in messages_sent:
                         print(i)
 
                     # Response
-                    print("*** write and press enter to respond (-q to quit) ***")
                     msg_body = input()
 
                     # Excape reserved word
                     if msg_body == '-q':
-                        break
+                        continue
 
                     # Send Response  
                     xmpp.direct_message(user_to_chat + "@redes2020.xyz", msg_body)
@@ -176,13 +191,72 @@ def process_menu1():
             
             # OPTION 4: for displaying contacts' info
             elif opt2 == 4:
-                print("")
+                print("\n------------- CONTACTS -------------")
                 xmpp.get_contacts()
 
-            # OPTION 5: session log out
+            # OPTION 5: for displaying all users
             elif opt2 == 5:
-                xmpp.get_disconnected()
-                time.sleep(4)
+                continue
+
+            # OPTION 6: for managing muc
+            elif opt2 == 6:
+
+                while True:
+                    try:
+                        opt2_6 = int(input(menu2_6))
+
+                        if opt2_6 < 1 or opt2_6 > 4:
+                            print("Choose a valid option")
+                            continue
+
+                        break
+                    except:
+                        opt2_6 = 4
+                        break
+                
+                if opt2_6 == 4:
+                    continue
+
+                elif opt2_6 == 3:
+                    xmpp.muc_discover_rooms()
+                    continue
+
+                room = input("Room: ")
+                nick_name = input("Nickname: ")
+
+                if opt2_6 == 2:
+                    asyncio.run(xmpp.muc_create_room(room, nick_name))
+                
+                elif opt2_6 == 1:
+                    xmpp.muc_join(room, nick_name)
+
+                print("\n--------- MUC AT " + room.upper() + " ---------")
+                print("* write and press enter to respond (-q to quit) *")
+
+                while True:
+                    try:
+                        msg_body = input("")
+
+                        # Excape reserved word
+                        if msg_body == '-q':
+                            break
+
+                        xmpp.muc_send_message(msg_body)
+                    except:
+                        continue
+                
+                # Exit room
+                xmpp.muc_exit_room()
+
+            # OPTION 7: for file transfering
+            elif opt2 == 7:
+                file_path = input("Path of file: ")
+                file_recipient = input("Send to: ")
+
+                # asyncio.run(xmpp.send_file(file_path, file_recipient))
+
+            # OPTION 8: session log out
+            elif opt2 == 8:
                 stop_threads = True
                 ses_thread.join()
                 break

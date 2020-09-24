@@ -81,9 +81,9 @@ It will request from you the useranme and password for the new account. The foll
 Remember that the password won't be display when you write it.
 
 Then if succesfull will display:
-'''
+```
   Account created for user_name@domain.xyz
-'''
+```
 
 #### Option 3:
 It will request from you the useranme and password for the account to delete. The following is an example:
@@ -94,9 +94,9 @@ It will request from you the useranme and password for the account to delete. Th
 Remember that the password won't be display when you write it.
 
 Then if succesfull will display:
-'''
-  Account created for user_name@domain.xyz
-'''
+```
+  Account deleted for user_name@domain.xyz
+```
 
 #### Option 4:
 Exit option.

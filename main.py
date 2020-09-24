@@ -38,7 +38,7 @@ Select one of the options:
     3. Add contact
     4. Show contacts
     5. Group Chat
-    6. Disconect/Log-out
+    6. Disconnect/Log-out
 '''
 
 # Menu for managing MUC (THIRD menu)

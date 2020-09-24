@@ -27,7 +27,7 @@ Install the following not-native libraries using pip:
 - slixmpp            1.5.2
 - asyncio            3.4.3
 
-## Program & modules specifications
+## Program & modules description
 - Program MAIN.PY: runs the main CLI for the client, everything is process by the modules. It uses two threads, one for managing the inputs from the user and other for running the XMPP client.
 - Module SESSION_MANAGER.PY: contains the class for the main XMPP client use in main.py. It contain the functions for processing messages, groupchats, adding contacts and requests from the server as well as the handlers for getting information from the server.
 - Module REGISTER.PY: contains the class for the XMPP client for registering an account with a server. The module disign to run the request, getting a response and exiting afterwards.
